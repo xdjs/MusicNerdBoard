@@ -11,7 +11,10 @@ describe("readSession", () => {
   afterEach(() => vi.unstubAllEnvs());
 
   it("reads back the member a session was made for", () => {
-    expect(readSession(createSession("jade@example.com"))).toBe("jade");
+    expect(readSession(createSession("jade@example.com"))).toEqual({
+      name: "jade",
+      email: "jade@example.com",
+    });
   });
 
   it("refuses a forged, missing or malformed session", () => {

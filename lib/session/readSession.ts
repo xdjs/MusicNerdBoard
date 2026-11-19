@@ -8,9 +8,12 @@ import { sign } from "@/lib/session/sign";
  *
  * @param token - The session cookie's value.
  * @param now - The current time, in milliseconds.
- * @returns The member's board name, or null for a missing, forged, expired or off-team session.
+ * @returns The member's board name and email, or null for a missing, forged, expired or off-team session.
  */
-export function readSession(token: string | undefined, now = Date.now()): string | null {
+export function readSession(
+  token: string | undefined,
+  now = Date.now(),
+): { name: string; email: string } | null {
   const [payload, signature] = (token ?? "").split(".");
   if (!payload || !signature) return null;
   const expected = Buffer.from(sign(payload));
@@ -20,5 +23,6 @@ export function readSession(token: string | undefined, now = Date.now()): string
     email: string;
     expires: number;
   };
-  return expires > now ? findMember(email) : null;
+  const name = expires > now ? findMember(email) : null;
+  return name ? { name, email } : null;
 }

@@ -23,7 +23,7 @@ export function withMember(handler: Handler, basePath: string): Handler {
       );
     }
     const headers = new Headers(request.headers);
-    headers.set("x-board-profile", member);
+    headers.set("x-board-profile", member.name);
     return handler(new Request(request, { headers }));
   };
 }
