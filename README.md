@@ -13,11 +13,11 @@ member writes posts as `<their name> via` the app, whatever name the page offers
 
 | Env var | What it is |
 | --- | --- |
-| `PRIVY_APP_ID`, `PRIVY_APP_SECRET` | The Privy app MusicNerdWeb uses |
+| `PRIVY_APP_ID` | The Privy app MusicNerdWeb uses. Identity tokens are checked against Privy's public keys, so no Privy secret is needed |
 | `BOARD_ALLOWED_EMAILS` | The team, as `name=email` pairs separated by commas. Removing someone ends their sessions |
 | `BOARD_SESSION_SECRET` | Signs session cookies. Rotating it signs everyone out |
 
-The Privy app must list this app's domains among its allowed origins.
+The Privy app must list this app's domains among its allowed origins and have identity tokens turned on.
 
 ```bash
 npm ci

@@ -4,7 +4,7 @@ import { findMember } from "@/lib/members/findMember";
 import { SESSION_COOKIE, SESSION_MAX_AGE_SECONDS } from "@/lib/session/const";
 import { createSession } from "@/lib/session/createSession";
 
-/** Signs a team member in: a Privy access token in `Authorization: Bearer` becomes a session cookie. */
+/** Signs a team member in: a Privy identity token in `Authorization: Bearer` becomes a session cookie. */
 export async function POST(request: Request) {
   const token = request.headers.get("authorization")?.replace(/^Bearer\s+/i, "");
   const email = token ? await getPrivyEmail(token) : null;

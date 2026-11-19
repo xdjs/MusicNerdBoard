@@ -1,26 +1,26 @@
 "use client";
 
-import { PrivyProvider, usePrivy } from "@privy-io/react-auth";
+import { PrivyProvider, useIdentityToken, usePrivy } from "@privy-io/react-auth";
 import { useEffect, useState } from "react";
 
-/** Exchanges the Privy login for a board session, then opens the board. */
+/** Exchanges the Privy login (its identity token) for a board session, then opens the board. */
 function SignIn() {
-  const { ready, authenticated, login, logout, getAccessToken } = usePrivy();
+  const { ready, authenticated, login, logout } = usePrivy();
+  const { identityToken } = useIdentityToken();
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    if (!ready || !authenticated) return;
+    if (!ready || !authenticated || !identityToken) return;
     (async () => {
-      const token = await getAccessToken();
       const response = await fetch("/api/session", {
         method: "POST",
-        headers: { authorization: `Bearer ${token}` },
+        headers: { authorization: `Bearer ${identityToken}` },
       });
       if (response.ok) return window.location.assign("/board");
       setError((await response.json()).error);
       await logout();
     })();
-  }, [ready, authenticated, getAccessToken, logout]);
+  }, [ready, authenticated, identityToken, logout]);
 
   return (
     <main style={{ display: "grid", placeItems: "center", minHeight: "100vh", gap: 12 }}>
