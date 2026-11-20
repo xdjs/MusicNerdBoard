@@ -24,6 +24,13 @@ export function withMember(handler: Handler, basePath: string): Handler {
     }
     const headers = new Headers(request.headers);
     headers.set("x-board-profile", member.name);
-    return handler(new Request(request, { headers }));
+    const hasBody = request.method !== "GET" && request.method !== "HEAD";
+    return handler(
+      new Request(request.url, {
+        method: request.method,
+        headers,
+        body: hasBody ? await request.arrayBuffer() : undefined,
+      }),
+    );
   };
 }

@@ -38,4 +38,18 @@ describe("withMember", () => {
     const response = await inspect(request);
     expect(await response.json()).toEqual({ profile: "carl" });
   });
+
+  it("passes the method and body through, even from a Request subclass like Next's", async () => {
+    class SubRequest extends Request {}
+    const echo = withMember(
+      async (request) => Response.json({ method: request.method, body: await request.text() }),
+      "/board",
+    );
+    const request = new SubRequest("https://board.test/board/board/messages", {
+      method: "POST",
+      headers: { cookie: cookie() },
+      body: '{"text":"hi"}',
+    });
+    expect(await (await echo(request)).json()).toEqual({ method: "POST", body: '{"text":"hi"}' });
+  });
 });
