@@ -8,16 +8,21 @@ token.
 
 Only the team gets in ([xdjs/MusicNerdWeb#1696](https://github.com/xdjs/MusicNerdWeb/issues/1696)). `/board` sends
 anyone without a session to `/login`. There they sign in with Privy, the same app as MusicNerdWeb and MusicNerdAPI.
-`/api/session` turns that sign-in into a signed session cookie, but only for an email on the allowlist. Everything a
-member writes posts as `<their name> via` the app, whatever name the page offers.
+A server action sends their Privy access token to MusicNerdAPI's team check (`GET /api/board/member`, which holds the
+team list) and turns the answer into a signed session cookie that lasts a day. Everything a member writes posts as
+`<their name> via` the app, whatever name the page offers. The app has no API routes of its own: endpoints live in
+MusicNerdAPI.
 
 | Env var | What it is |
 | --- | --- |
-| `PRIVY_APP_ID` | The Privy app MusicNerdWeb uses. Identity tokens are checked against Privy's public keys, so no Privy secret is needed |
-| `BOARD_ALLOWED_EMAILS` | The team, as `name=email` pairs separated by commas. Removing someone ends their sessions |
+| `PRIVY_APP_ID` | The Privy app MusicNerdWeb uses, for the sign-in page |
 | `BOARD_SESSION_SECRET` | Signs session cookies. Rotating it signs everyone out |
 
-The Privy app must list this app's domains among its allowed origins and have identity tokens turned on.
+Production talks to `api.musicnerd.net`; previews and local development talk to MusicNerdAPI's staging
+environment. To verify a paired API PR, build a preview with
+`--build-env NEXT_PUBLIC_MUSICNERD_API_PREVIEW_URL=<its preview URL>`.
+
+The Privy app must list this app's domains among its allowed origins.
 
 ```bash
 npm ci

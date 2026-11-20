@@ -6,12 +6,11 @@ const ok = vi.fn(async (request: Request) =>
   Response.json({ profile: request.headers.get("x-board-profile") }),
 );
 const inspect = withMember(ok, "/board");
-const cookie = () => `mn_board_session=${createSession("carl@example.com")}`;
+const cookie = () => `mn_board_session=${createSession("carl")}`;
 
 describe("withMember", () => {
   beforeEach(() => {
     vi.stubEnv("BOARD_SESSION_SECRET", "test-secret");
-    vi.stubEnv("BOARD_ALLOWED_EMAILS", "carl=carl@example.com");
     ok.mockClear();
   });
   afterEach(() => vi.unstubAllEnvs());

@@ -5,9 +5,9 @@ import { readSession } from "@/lib/session/readSession";
  * The member a request's session cookie names.
  *
  * @param request - The incoming request.
- * @returns The member's board name and email, or null when the request has no valid session.
+ * @returns The member's board name, or null when the request has no valid session.
  */
-export function readSessionCookie(request: Request): { name: string; email: string } | null {
+export function readSessionCookie(request: Request): { name: string } | null {
   const cookie = (request.headers.get("cookie") ?? "")
     .split(";")
     .map((part) => part.trim())
