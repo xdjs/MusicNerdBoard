@@ -51,4 +51,25 @@ describe("withMember", () => {
     });
     expect(await (await echo(request)).json()).toEqual({ method: "POST", body: '{"text":"hi"}' });
   });
+  it("serves the page to a member already signed in as them", async () => {
+    const page = withMember(
+      async () =>
+        new Response('<meta name="inspect-profile" content="null">\n<meta name="inspect-named" content="1">\n', {
+          headers: { "content-type": "text/html; charset=utf-8" },
+        }),
+      "/board",
+    );
+    const response = await page(new Request("https://board.test/board", { headers: { cookie: cookie() } }));
+    const html = await response.text();
+    expect(html).not.toContain("inspect-named");
+    expect(html).toContain('content="{&#34;name&#34;:&#34;carl&#34;}"');
+    expect(response.headers.get("content-type")).toContain("text/html");
+  });
+
+  it("leaves the board's API responses alone", async () => {
+    const response = await inspect(
+      new Request("https://board.test/board/board/threads", { headers: { cookie: cookie() } }),
+    );
+    expect(await response.json()).toEqual({ profile: "carl" });
+  });
 });

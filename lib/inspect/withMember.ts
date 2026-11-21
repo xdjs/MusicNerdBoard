@@ -1,10 +1,12 @@
 import { readSessionCookie } from "@/lib/session/readSessionCookie";
+import { startAsMember } from "@/lib/inspect/startAsMember";
 
 type Handler = (request: Request) => Promise<Response>;
 
 /**
  * Lets only signed-in team members reach the inspector, and makes every write
- * theirs: the profile the page picks is replaced by the member's name.
+ * theirs: the profile the page picks is replaced by the member's name, and the
+ * page starts as them instead of asking who's posting.
  *
  * @param handler - The inspector's handler.
  * @param basePath - Where the inspector is mounted, e.g. `/board`.
@@ -25,12 +27,17 @@ export function withMember(handler: Handler, basePath: string): Handler {
     const headers = new Headers(request.headers);
     headers.set("x-board-profile", member.name);
     const hasBody = request.method !== "GET" && request.method !== "HEAD";
-    return handler(
+    const response = await handler(
       new Request(request.url, {
         method: request.method,
         headers,
         body: hasBody ? await request.arrayBuffer() : undefined,
       }),
     );
+    if (!response.headers.get("content-type")?.startsWith("text/html")) return response;
+    const page = startAsMember(await response.text(), member.name);
+    const pageHeaders = new Headers(response.headers);
+    pageHeaders.delete("content-length");
+    return new Response(page, { status: response.status, headers: pageHeaders });
   };
 }
