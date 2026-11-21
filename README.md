@@ -8,7 +8,7 @@ token.
 
 Only the team gets in ([xdjs/MusicNerdWeb#1696](https://github.com/xdjs/MusicNerdWeb/issues/1696)). `/board` sends
 anyone without a session to `/login`. There they sign in with Privy, the same app as MusicNerdWeb and MusicNerdAPI.
-A server action sends their Privy access token to MusicNerdAPI's team check (`GET /api/board/member`, which holds the
+A server action sends their Privy access token to MusicNerdAPI's team check (`GET /api/team/member`, which holds the
 team list) and turns the answer into a signed session cookie that lasts a day. Everything a member writes posts as
 `<their name> via` the app, whatever name the page offers. The app has no API routes of its own: endpoints live in
 MusicNerdAPI.

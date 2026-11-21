@@ -1,7 +1,7 @@
 "use server";
 
 import { cookies } from "next/headers";
-import { getBoardMember } from "@/lib/members/getBoardMember";
+import { getTeamMember } from "@/lib/members/getTeamMember";
 import { SESSION_COOKIE, SESSION_MAX_AGE_SECONDS } from "@/lib/session/const";
 import { createSession } from "@/lib/session/createSession";
 
@@ -13,7 +13,7 @@ import { createSession } from "@/lib/session/createSession";
  * @returns `{ ok: true }`, or why sign-in was refused.
  */
 export async function signIn(accessToken: string): Promise<{ ok: true } | { error: string }> {
-  const member = await getBoardMember(accessToken);
+  const member = await getTeamMember(accessToken);
   if ("error" in member) return { error: member.error };
   (await cookies()).set(SESSION_COOKIE, createSession(member.name), {
     httpOnly: true,
