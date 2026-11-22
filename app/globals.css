@@ -1,0 +1,28 @@
+@import "tailwindcss";
+
+@theme {
+  /* The design's phone layout is 600px and below; `sm:` is everything wider. */
+  --breakpoint-sm: 601px;
+
+  --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-system: -apple-system, system-ui, sans-serif;
+
+  --color-pink: #ff75d8;
+
+  --color-page: #f7f5f8;
+  --color-card: rgba(255, 255, 255, 0.55);
+  --color-border: rgba(66, 43, 70, 0.12);
+  --color-ink: #1a1a1a;
+  --color-muted: #5a4d5e;
+  --color-headline: #77717a;
+  --color-pink-text: #c44a8c;
+  --color-chip: #ffffff;
+
+  --color-page-dark: #1a1a1a;
+  --color-card-dark: rgba(30, 30, 30, 0.55);
+  --color-border-dark: rgba(255, 255, 255, 0.08);
+  --color-ink-dark: #f7fafc;
+  --color-muted-dark: #a0aec0;
+  --color-headline-dark: #a9a5ac;
+  --color-chip-dark: #2a282c;
+}
