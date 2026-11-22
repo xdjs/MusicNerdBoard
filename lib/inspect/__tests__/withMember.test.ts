@@ -31,6 +31,18 @@ describe("withMember", () => {
     expect(ok).not.toHaveBeenCalled();
   });
 
+  it("sends a signed-out browser that opens an API address home to /", async () => {
+    for (const path of ["/board/board", "/board/board/threads"]) {
+      const request = new Request(`https://board.test${path}`, {
+        headers: { "sec-fetch-mode": "navigate" },
+      });
+      const response = await inspect(request);
+      expect(response.status).toBe(302);
+      expect(response.headers.get("location")).toBe("https://board.test/");
+    }
+    expect(ok).not.toHaveBeenCalled();
+  });
+
   it("refuses a signed-out call to the board's API", async () => {
     for (const path of ["/board/board", "/board/board/threads"]) {
       const response = await inspect(new Request(`https://board.test${path}`));

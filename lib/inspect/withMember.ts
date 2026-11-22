@@ -11,7 +11,7 @@ type Handler = (request: Request) => Promise<Response>;
  * @param handler - The inspector's handler.
  * @param basePath - Where the inspector is mounted, e.g. `/board`.
  * @returns A handler that sends strangers on a page (any GET outside `${basePath}/board`, the
- *   inspector's API) home to `/`, which leads to `/login`; the page at `basePath` goes straight to
+ *   inspector's API, or any address a browser opens directly) home to `/`, which leads to `/login`; the page at `basePath` goes straight to
  *   `/login`, since `/` redirects back to it. Every other request gets a 401.
  */
 export function withMember(handler: Handler, basePath: string): Handler {
@@ -20,7 +20,9 @@ export function withMember(handler: Handler, basePath: string): Handler {
     if (!member) {
       const path = new URL(request.url).pathname.replace(/\/+$/, "");
       const api = `${basePath}/board`;
-      if (request.method === "GET" && path !== api && !path.startsWith(`${api}/`))
+      const page = path !== api && !path.startsWith(`${api}/`);
+      const navigation = request.headers.get("sec-fetch-mode") === "navigate";
+      if (request.method === "GET" && (page || navigation))
         return Response.redirect(new URL(path === basePath ? "/login" : "/", request.url), 302);
       return Response.json(
         { error: { code: "unauthorized", message: "sign in at /login" } },
