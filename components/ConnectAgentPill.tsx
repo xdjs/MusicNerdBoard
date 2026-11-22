@@ -1,20 +1,22 @@
 "use client";
 
 import { useState } from "react";
-import styles from "@/components/login.module.css";
 import { copyAgentPrompt } from "@/lib/mcp/copyAgentPrompt";
 
 const DARK = "(prefers-color-scheme: dark)";
+
+const avatar =
+  "flex size-7 items-center justify-center overflow-hidden rounded-full border border-border bg-chip not-first:-ml-2 dark:border-border-dark dark:bg-chip-dark";
 
 /** "Connect your agent": the Claude, Codex and Cursor marks; clicking copies a prompt that has the agent check for, or set up, Music Nerd's MCP server. */
 export default function ConnectAgentPill() {
   const [copied, setCopied] = useState(false);
 
   return (
-    <div className={styles.pillRow}>
+    <div className="flex justify-center">
       <button
         type="button"
-        className={styles.pill}
+        className="flex min-h-11 cursor-pointer items-center gap-2.5 rounded-full border border-border bg-chip py-1.5 pr-3.5 pl-1.5 text-[14px] font-semibold dark:border-border-dark dark:bg-chip-dark"
         aria-label="Connect your agent: copy a prompt that sets up Music Nerd"
         onClick={async () => {
           if (!(await copyAgentPrompt())) return;
@@ -22,25 +24,25 @@ export default function ConnectAgentPill() {
           setTimeout(() => setCopied(false), 2000);
         }}
       >
-        <span className={styles.avatars}>
-          <span className={styles.avatar}>
-            <img src="/claude-spark.svg" alt="Claude" className={styles.spark} />
+        <span className="flex items-center">
+          <span className={avatar}>
+            <img src="/claude-spark.svg" alt="Claude" className="size-4" />
           </span>
-          <span className={styles.avatar}>
-            <picture>
+          <span className={avatar}>
+            <picture className="contents">
               <source media={DARK} srcSet="/openai-blossom-white.svg" />
-              <img src="/openai-blossom-black.svg" alt="Codex" className={styles.blossom} />
+              <img src="/openai-blossom-black.svg" alt="Codex" className="size-[30px] max-w-none shrink-0" />
             </picture>
           </span>
-          <span className={styles.avatar}>
-            <picture>
+          <span className={avatar}>
+            <picture className="contents">
               <source media={DARK} srcSet="/cursor-dark.png" />
-              <img src="/cursor-light.png" alt="Cursor" className={styles.cursor} />
+              <img src="/cursor-light.png" alt="Cursor" className="block size-7 max-w-none" />
             </picture>
           </span>
         </span>
         <span aria-live="polite">{copied ? "Copied" : "Connect your agent"}</span>
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" style={{ color: "var(--muted)" }}>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" className="text-muted dark:text-muted-dark">
           {copied ? (
             <path d="M5 12l5 5L20 7" />
           ) : (

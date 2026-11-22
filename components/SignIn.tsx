@@ -9,7 +9,6 @@ import LoginHeader from "@/components/LoginHeader";
 import LoginHero from "@/components/LoginHero";
 import RefusedCard from "@/components/RefusedCard";
 import SignInCard from "@/components/SignInCard";
-import styles from "@/components/login.module.css";
 import { isNotOnTeam } from "@/lib/members/isNotOnTeam";
 
 /** Exchanges the Privy login (its access token) for a board session, then opens the board. */
@@ -39,10 +38,10 @@ export default function SignIn() {
   };
 
   return (
-    <div className={styles.page}>
+    <div className="flex min-h-dvh flex-col bg-page px-4 pt-5 pb-6 font-sans text-ink sm:p-0 dark:bg-page-dark dark:text-ink-dark">
       <LoginHeader />
-      <main className={styles.main}>
-        <section aria-labelledby="login-title" className={styles.section}>
+      <main className="flex grow items-center justify-center sm:p-6">
+        <section aria-labelledby="login-title" className="flex w-full flex-col gap-[18px] sm:max-w-[440px] sm:gap-5">
           <LoginHero />
           {refused ? (
             <RefusedCard email={refused.email} onTryAgain={startLogin} />
