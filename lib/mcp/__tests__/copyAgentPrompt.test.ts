@@ -8,7 +8,7 @@ describe("copyAgentPrompt", () => {
     await expect(copyAgentPrompt({ writeText })).resolves.toBe(true);
     expect(writeText).toHaveBeenCalledWith(AGENT_PROMPT);
     expect(AGENT_PROMPT).toContain("https://api.musicnerd.net/mcp");
-    expect(AGENT_PROMPT).toContain("https://musicnerd-docs.vercel.app/mcp");
+    expect(AGENT_PROMPT).toContain("https://docs.musicnerd.net/mcp");
   });
 
   it("says so when the browser won't copy", async () => {
