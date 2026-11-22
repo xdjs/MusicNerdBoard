@@ -1,7 +1,6 @@
 "use client";
 
-import { useState } from "react";
-import { copyAgentPrompt } from "@/lib/mcp/copyAgentPrompt";
+import { useCopyAgentPrompt } from "@/hooks/useCopyAgentPrompt";
 
 const DARK = "(prefers-color-scheme: dark)";
 
@@ -10,7 +9,7 @@ const avatar =
 
 /** "Connect your agent": the Claude, Codex and Cursor marks; clicking copies a prompt that has the agent check for, or set up, Music Nerd's MCP server. */
 export default function ConnectAgentPill() {
-  const [copied, setCopied] = useState(false);
+  const { copied, copy } = useCopyAgentPrompt();
 
   return (
     <div className="flex justify-center">
@@ -18,26 +17,22 @@ export default function ConnectAgentPill() {
         type="button"
         className="flex min-h-11 cursor-pointer items-center gap-2.5 rounded-full border border-border bg-chip py-1.5 pr-3.5 pl-1.5 text-[14px] font-semibold dark:border-border-dark dark:bg-chip-dark"
         aria-label="Connect your agent: copy a prompt that sets up Music Nerd"
-        onClick={async () => {
-          if (!(await copyAgentPrompt())) return;
-          setCopied(true);
-          setTimeout(() => setCopied(false), 2000);
-        }}
+        onClick={copy}
       >
         <span className="flex items-center">
           <span className={avatar}>
-            <img src="/claude-spark.svg" alt="Claude" className="size-4" />
+            <img src="/images/agents/claude-spark.svg" alt="Claude" className="size-4" />
           </span>
           <span className={avatar}>
             <picture className="contents">
-              <source media={DARK} srcSet="/openai-blossom-white.svg" />
-              <img src="/openai-blossom-black.svg" alt="Codex" className="size-[30px] max-w-none shrink-0" />
+              <source media={DARK} srcSet="/images/agents/openai-blossom-white.svg" />
+              <img src="/images/agents/openai-blossom-black.svg" alt="Codex" className="size-[30px] max-w-none shrink-0" />
             </picture>
           </span>
           <span className={avatar}>
             <picture className="contents">
-              <source media={DARK} srcSet="/cursor-dark.png" />
-              <img src="/cursor-light.png" alt="Cursor" className="block size-7 max-w-none" />
+              <source media={DARK} srcSet="/images/agents/cursor-dark.png" />
+              <img src="/images/agents/cursor-light.png" alt="Cursor" className="block size-7 max-w-none" />
             </picture>
           </span>
         </span>
