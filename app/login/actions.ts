@@ -10,11 +10,13 @@ import { createSession } from "@/lib/session/createSession";
  * becomes a signed session cookie on this domain.
  *
  * @param accessToken - The member's Privy access token.
- * @returns `{ ok: true }`, or why sign-in was refused.
+ * @returns `{ ok: true }`, or why sign-in was refused and the team check's status.
  */
-export async function signIn(accessToken: string): Promise<{ ok: true } | { error: string }> {
+export async function signIn(
+  accessToken: string,
+): Promise<{ ok: true } | { error: string; status: number }> {
   const member = await getTeamMember(accessToken);
-  if ("error" in member) return { error: member.error };
+  if ("error" in member) return member;
   (await cookies()).set(SESSION_COOKIE, createSession(member.name), {
     httpOnly: true,
     secure: true,
