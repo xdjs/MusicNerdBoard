@@ -2,11 +2,11 @@
 
 import { useState } from "react";
 import styles from "@/components/login.module.css";
-import { copyMcpUrl } from "@/lib/mcp/copyMcpUrl";
+import { copyAgentPrompt } from "@/lib/mcp/copyAgentPrompt";
 
 const DARK = "(prefers-color-scheme: dark)";
 
-/** "Connect your agent": the Claude, Codex and Cursor marks; clicking copies Music Nerd's MCP URL. */
+/** "Connect your agent": the Claude, Codex and Cursor marks; clicking copies a prompt that has the agent check for, or set up, Music Nerd's MCP server. */
 export default function ConnectAgentPill() {
   const [copied, setCopied] = useState(false);
 
@@ -15,9 +15,9 @@ export default function ConnectAgentPill() {
       <button
         type="button"
         className={styles.pill}
-        aria-label="Connect your agent: copy the Music Nerd MCP URL"
+        aria-label="Connect your agent: copy a prompt that sets up Music Nerd"
         onClick={async () => {
-          if (!(await copyMcpUrl())) return;
+          if (!(await copyAgentPrompt())) return;
           setCopied(true);
           setTimeout(() => setCopied(false), 2000);
         }}
