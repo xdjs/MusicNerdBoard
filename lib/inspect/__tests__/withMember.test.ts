@@ -22,9 +22,23 @@ describe("withMember", () => {
     expect(ok).not.toHaveBeenCalled();
   });
 
+  it("sends a signed-out visitor on any other board page home to /", async () => {
+    for (const path of ["/board/c/general", "/board/c/general/t/msg_1"]) {
+      const response = await inspect(new Request(`https://board.test${path}`));
+      expect(response.status).toBe(302);
+      expect(response.headers.get("location")).toBe("https://board.test/");
+    }
+    expect(ok).not.toHaveBeenCalled();
+  });
+
   it("refuses a signed-out call to the board's API", async () => {
-    const response = await inspect(new Request("https://board.test/board/board/threads"));
-    expect(response.status).toBe(401);
+    for (const path of ["/board/board", "/board/board/threads"]) {
+      const response = await inspect(new Request(`https://board.test${path}`));
+      expect(response.status).toBe(401);
+      expect(await response.json()).toEqual({
+        error: { code: "unauthorized", message: "sign in at /login" },
+      });
+    }
     expect(ok).not.toHaveBeenCalled();
   });
 
