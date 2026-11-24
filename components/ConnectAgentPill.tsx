@@ -7,7 +7,7 @@ const DARK = "(prefers-color-scheme: dark)";
 const avatar =
   "flex size-7 items-center justify-center overflow-hidden rounded-full border border-border bg-chip not-first:-ml-2 dark:border-border-dark dark:bg-chip-dark";
 
-/** "Connect your agent": the Claude, Codex and Cursor marks; clicking copies a prompt that has the agent check for, or set up, Music Nerd's MCP server. */
+/** "Connect your agent": the Claude, Codex and Cursor marks; clicking copies a prompt that has the agent check for, enable or install the Music Nerd plugin. */
 export default function ConnectAgentPill() {
   const { copied, copy } = useCopyAgentPrompt();
 
