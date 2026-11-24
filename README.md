@@ -13,6 +13,11 @@ team list) and turns the answer into a signed session cookie that lasts a day. E
 `<their name> via` the app, whatever name the page offers. The app has no API routes of its own: endpoints live in
 MusicNerdAPI.
 
+**Log out** sits at the foot of the profile popover, bottom left. `@vercel/board` has no slot for it, so the app
+adds `public/log-out.js` to the board page, and the item opens `/logout`. That page deletes this browser's session
+cookie (a server action) and signs out of Privy, so `/login` doesn't sign the member straight back in, then opens
+`/login`. Other members' sessions are untouched.
+
 | Env var | What it is |
 | --- | --- |
 | `PRIVY_APP_ID` | The Privy app MusicNerdWeb uses, for the sign-in page |
