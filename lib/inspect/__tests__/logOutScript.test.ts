@@ -49,6 +49,16 @@ describe("public/log-out.js", () => {
     expect(assign).toHaveBeenCalledWith("/logout");
   });
 
+  it("highlights Log out under the pointer, like the menu's own items", async () => {
+    const popup = menu("another profile…");
+    await settle();
+    const item = popup.querySelector<HTMLElement>("[data-log-out]")!;
+    item.dispatchEvent(new Event("pointerenter"));
+    expect(item.hasAttribute("data-highlighted")).toBe(true);
+    item.dispatchEvent(new Event("pointerleave"));
+    expect(item.hasAttribute("data-highlighted")).toBe(false);
+  });
+
   it("adds it once, however often the page changes", async () => {
     const popup = menu("another profile…");
     await settle();

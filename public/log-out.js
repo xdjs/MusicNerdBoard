@@ -13,6 +13,8 @@
     item.tabIndex = -1;
     item.dataset.logOut = "";
     item.innerHTML = '<span class="grow">Log out</span>';
+    item.addEventListener("pointerenter", () => item.setAttribute("data-highlighted", ""));
+    item.addEventListener("pointerleave", () => item.removeAttribute("data-highlighted"));
     item.addEventListener("click", () => window.location.assign("/logout"));
     menu.append(separator, item);
   };
