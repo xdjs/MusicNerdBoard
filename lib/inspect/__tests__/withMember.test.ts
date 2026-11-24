@@ -80,7 +80,7 @@ describe("withMember", () => {
   it("serves the page to a member already signed in as them", async () => {
     const page = withMember(
       async () =>
-        new Response('<meta name="inspect-profile" content="null">\n<meta name="inspect-named" content="1">\n', {
+        new Response('<meta name="inspect-profile" content="null">\n<meta name="inspect-named" content="1">\n</body>', {
           headers: { "content-type": "text/html; charset=utf-8" },
         }),
       "/board",
@@ -89,6 +89,7 @@ describe("withMember", () => {
     const html = await response.text();
     expect(html).not.toContain("inspect-named");
     expect(html).toContain('content="{&#34;name&#34;:&#34;carl&#34;}"');
+    expect(html).toContain('<script src="/log-out.js" defer></script>');
     expect(response.headers.get("content-type")).toContain("text/html");
   });
 

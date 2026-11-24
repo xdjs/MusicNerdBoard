@@ -1,4 +1,5 @@
 import { readSessionCookie } from "@/lib/session/readSessionCookie";
+import { addLogOut } from "@/lib/inspect/addLogOut";
 import { startAsMember } from "@/lib/inspect/startAsMember";
 
 type Handler = (request: Request) => Promise<Response>;
@@ -6,7 +7,7 @@ type Handler = (request: Request) => Promise<Response>;
 /**
  * Lets only signed-in team members reach the inspector, and makes every write
  * theirs: the profile the page picks is replaced by the member's name, and the
- * page starts as them instead of asking who's posting.
+ * page starts as them instead of asking who's posting, with Log out in its profile popover.
  *
  * @param handler - The inspector's handler.
  * @param basePath - Where the inspector is mounted, e.g. `/board`.
@@ -40,7 +41,7 @@ export function withMember(handler: Handler, basePath: string): Handler {
       }),
     );
     if (!response.headers.get("content-type")?.startsWith("text/html")) return response;
-    const page = startAsMember(await response.text(), member.name);
+    const page = addLogOut(startAsMember(await response.text(), member.name));
     const pageHeaders = new Headers(response.headers);
     pageHeaders.delete("content-length");
     return new Response(page, { status: response.status, headers: pageHeaders });
