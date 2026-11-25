@@ -13,9 +13,11 @@ team list) and turns the answer into a signed session cookie that lasts a day. E
 `<their name> via` the app, whatever name the page offers. The app has no API routes of its own: endpoints live in
 MusicNerdAPI.
 
-**Connect your agent** copies the prompt that sets up the Music Nerd plugin (`lib/mcp/const.ts`), from the login page
-and from the board's Settings page. `@vercel/board` has no slot on Settings, so the app adds `public/connect-agent.js`
-to the board page with the prompt in its `data-prompt`, and the script puts the button in the page's header.
+**Connect your agent** copies the prompt that sets up the Music Nerd plugin (`lib/mcp/const.ts`). It is one button,
+`components/ConnectAgentButton.tsx`, styled by plain CSS (`lib/mcp/connectAgentCss.ts`), on the login page and on the
+board's Settings page between "you" and "explain". `@vercel/board` has no slot there and its page loads none of our
+styles, so the app adds `public/connect-agent.js` to the board page with the prompt in its `data-prompt`; the script
+copies the button and its styles from the app's `/connect-agent` page.
 
 | Env var | What it is |
 | --- | --- |
