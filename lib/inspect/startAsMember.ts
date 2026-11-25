@@ -1,5 +1,4 @@
-const attribute = (value: string) =>
-  value.replace(/[&<>"']/g, (char) => `&#${char.charCodeAt(0)};`);
+import { escapeAttribute } from "@/lib/inspect/escapeAttribute";
 
 /**
  * Starts the inspector's page as the signed-in member, so it skips its "Who's posting?" box:
@@ -14,6 +13,6 @@ export function startAsMember(html: string, name: string): string {
     .replace(/<meta name="inspect-named" content="1">\n?/, "")
     .replace(
       /<meta name="inspect-profile" content="[^"]*">/,
-      () => `<meta name="inspect-profile" content="${attribute(JSON.stringify({ name }))}">`,
+      () => `<meta name="inspect-profile" content="${escapeAttribute(JSON.stringify({ name }))}">`,
     );
 }

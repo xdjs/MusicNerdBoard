@@ -13,6 +13,10 @@ team list) and turns the answer into a signed session cookie that lasts a day. E
 `<their name> via` the app, whatever name the page offers. The app has no API routes of its own: endpoints live in
 MusicNerdAPI.
 
+**Connect your agent** copies the prompt that sets up the Music Nerd plugin (`lib/mcp/const.ts`), from the login page
+and from the board's Settings page. `@vercel/board` has no slot on Settings, so the app adds `public/connect-agent.js`
+to the board page with the prompt in its `data-prompt`, and the script puts the button in the page's header.
+
 | Env var | What it is |
 | --- | --- |
 | `PRIVY_APP_ID` | The Privy app MusicNerdWeb uses, for the sign-in page |
